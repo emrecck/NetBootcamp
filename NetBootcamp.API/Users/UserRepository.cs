@@ -9,15 +9,17 @@ namespace NetBootcamp.API.Users
             new User{ Id=2, Name="Yunus",Surname="Çiçek",PhoneNumber="67891012345",Email="yunus@gmail.com"},
             new User{ Id=3, Name="Şeyma",Surname="Çiçek",PhoneNumber="56789123410",Email="seyma@gmail.com"},
         ];
-        
-        public List<User> GetAll()
-        {
-            return _userList;
-        }
+
+        public IReadOnlyList<User> GetAll() => _userList;
 
         public User? GetById(int id)
         {
             return _userList.Find(x => x.Id == id);
+        }
+
+        public User? GetByPhoneNumber(string phoneNumber)
+        {
+            return _userList.Find(x => x.PhoneNumber == phoneNumber);
         }
 
         public void Create(User user)

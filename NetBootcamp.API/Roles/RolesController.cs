@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
+using NetBootcamp.API.Roles.DTOs;
 using NetBootcamp.API.Users;
 
 namespace NetBootcamp.API.Roles
 {
-    public class RolesController : CustomBaseController
+    public class RolesController(IRoleService roleService) : CustomBaseController
     {
-        private readonly IRoleService _roleService;
-
-        public RolesController(IRoleService roleService)
-        {
-            _roleService = roleService;
-        }
+        private readonly IRoleService _roleService = roleService;
 
         [HttpGet]
         public IActionResult GetAll()
@@ -26,7 +22,7 @@ namespace NetBootcamp.API.Roles
         }
 
         [HttpPost]
-        public IActionResult Create(Role request)
+        public IActionResult Create(RoleCreateRequestDto request)
         {
             var result = _roleService.Create(request);
 
@@ -34,12 +30,12 @@ namespace NetBootcamp.API.Roles
         }
 
         [HttpPut("{roleId}")]
-        public IActionResult Update(int roleId, Role request)
+        public IActionResult Update(int roleId, RoleUpdateRequestDto request)
         {
             return CreateActionResult(_roleService.Update(roleId, request));
         }
 
-        [HttpDelete]
+        [HttpDelete("{roleId}")]
         public IActionResult Delete(int roleId)
         {
             return CreateActionResult(_roleService.Delete(roleId));

@@ -15,7 +15,7 @@ namespace NetBootcamp.API.Products
         [HttpGet]
         public IActionResult GetAll([FromServices] PriceCalculator priceCalculator)
         {
-            return Ok(_productService.GetAllWithCalulatedTax(priceCalculator)); // Ok ControllerBase sınıfından kalıtımla alınmış factory metot.
+            return CreateActionResult(_productService.GetAllWithCalulatedTax(priceCalculator)); // Ok ControllerBase sınıfından kalıtımla alınmış factory metot.
         }
 
         // query string baseUrl/api/products?id=1

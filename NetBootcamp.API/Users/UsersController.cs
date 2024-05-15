@@ -1,19 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
+using NetBootcamp.API.Users.DTOs;
 
 namespace NetBootcamp.API.Users
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : CustomBaseController
+    public class UsersController(IUserService userService) : CustomBaseController
     {
-        private readonly IUserService _userService;
-
-        public UsersController(IUserService userService)
-        {
-            _userService = userService;
-        }
+        private readonly IUserService _userService = userService;
 
         [HttpGet]
         public IActionResult GetAll()
@@ -28,7 +24,7 @@ namespace NetBootcamp.API.Users
         }
 
         [HttpPost]
-        public IActionResult Create(User request)
+        public IActionResult Create(UserCreateRequestDto request)
         {
             var result = _userService.Create(request);
 
@@ -36,12 +32,12 @@ namespace NetBootcamp.API.Users
         }
 
         [HttpPut("{userId}")]
-        public IActionResult Update(int userId, User request)
+        public IActionResult Update(int userId, UserUpdateRequestDto request)
         {
             return CreateActionResult(_userService.Update(userId, request));
         }
 
-        [HttpDelete]
+        [HttpDelete("{userId}")]
         public IActionResult Delete(int userId) 
         {
             return CreateActionResult(_userService.Delete(userId));
