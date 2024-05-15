@@ -1,4 +1,6 @@
 using NetBootcamp.API.Products;
+using NetBootcamp.API.Roles;
+using NetBootcamp.API.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,11 @@ builder.Services.AddSwaggerGen();   // swagger oluþturmak için kullanýlýr
 // 3.AddTransient
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddSingleton<PriceCalculator>();
 
 var app = builder.Build();

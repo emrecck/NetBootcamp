@@ -8,6 +8,15 @@ namespace NetBootcamp.API.Controllers
     [ApiController]
     public class CustomBaseController : ControllerBase
     {
+        /// <summary>
+        /// This method has been created for Create Actions.
+        /// Becasuse of that when a create request taken, then this method provide a link for created item.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="response"></param>
+        /// <param name="methodName"></param>
+        /// <param name="routeValues"></param>
+        /// <returns></returns>
         public IActionResult CreateActionResult<T>(ResponseModelDto<T> response, string methodName, object? routeValues)
         {
             if (response.StatusCodes == HttpStatusCode.NoContent)
