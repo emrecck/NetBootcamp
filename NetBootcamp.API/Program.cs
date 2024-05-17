@@ -1,11 +1,25 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using NetBootcamp.API.Products;
+using NetBootcamp.API.Products.DTOs.ProductCreateUseCase;
+using NetBootcamp.API.Repositories;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(x =>
+{
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+});
 
 builder.Services.AddControllers();  // her requestte controllerdan nesne oluþturur
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();   // swagger oluþturmak için kullanýlýr
+builder.Services.AddFluentValidationAutoValidation();
+//builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());    // Çalýþtýðý assembly üzerindeki bütün abstract validator larý ekler
+builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidator>();  // ProductCreateRequestValidator ýn bulunduðu assembly i alýr 
 
 // Add services to the container.
 
@@ -28,6 +42,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<PriceCalculator>();
 
 var app = builder.Build();
+
+app.SeedDatabase(); // Extension method for WebApplication
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

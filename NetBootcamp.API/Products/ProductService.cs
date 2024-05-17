@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.DTOs;
 using NetBootcamp.API.Products.DTOs;
+using NetBootcamp.API.Products.DTOs.ProductCreateUseCase;
 using System.Collections.Immutable;
 using System.Net;
 
@@ -35,12 +36,26 @@ namespace NetBootcamp.API.Products
             return ResponseModelDto<ProductDto?>.Success(newDto);
         }
 
+        public ResponseModelDto<IReadOnlyList<ProductDto>> GetByPaging(int page, int pageSize, PriceCalculator priceCalculator)
+        {
+            var productList = _productRepository.GetByPaging(page, pageSize).Select(product => new ProductDto
+            (product.Id, product.Name, priceCalculator.CalculateKdv(product.Price, 1.2m), product.Created.ToShortDateString())).ToImmutableList();
+
+            return ResponseModelDto<IReadOnlyList<ProductDto>>.Success(productList);
+        }
+
         public ResponseModelDto<int> Create(ProductCreateRequestDto request) // Add metotlarında geriye kaydedilen ürünün id si dönülür.
         {
+            // This validation moved to fluent validation validator.
+            //
+            //  var hasProduct = _productRepository.IsExist(request.Name);
+            //  if (hasProduct)
+            //    return ResponseModelDto<int>.Fail("Eklemek istediğiniz ürün zaten mevcut !");
+
             var newProduct = new Product
             {
                 Id = _productRepository.GetAll().Count + 1,
-                Name = request.Name,
+                Name = request.Name.Trim(),
                 Price = request.Price,
                 Created = DateTime.Now
             };
@@ -65,6 +80,17 @@ namespace NetBootcamp.API.Products
                 Created = hasProduct.Created,
             };
             _productRepository.Update(updatedProduct);
+            return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
+        }
+
+        public ResponseModelDto<NoContent> UpdateProductName(ProductNameUpdateRequestDto request)
+        {
+            var hasProduct = _productRepository.GetById(request.Id);
+            if (hasProduct is null)
+                return ResponseModelDto<NoContent>.Fail("Güncellemeye çalıştığınız ürün bulunamadı!", HttpStatusCode.NotFound);
+
+            _productRepository.UpdateProductName(request.Name, request.Id);
+            
             return ResponseModelDto<NoContent>.Success(HttpStatusCode.NoContent);
         }
 

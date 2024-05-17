@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 using NetBootcamp.API.Products.DTOs;
+using NetBootcamp.API.Products.DTOs.ProductCreateUseCase;
 
 namespace NetBootcamp.API.Products
 {
@@ -15,19 +16,25 @@ namespace NetBootcamp.API.Products
         [HttpGet]
         public IActionResult GetAll([FromServices] PriceCalculator priceCalculator)
         {
-            return Ok(_productService.GetAllWithCalulatedTax(priceCalculator)); // Ok ControllerBase sınıfından kalıtımla alınmış factory metot.
+            return CreateActionResult(_productService.GetAllWithCalulatedTax(priceCalculator)); // Ok ControllerBase sınıfından kalıtımla alınmış factory metot.
         }
 
         // query string baseUrl/api/products?id=1
         // route        baseUrl/api/products/1
 
-        [HttpGet("{productId}")]   // Parametreyi route dan alır
+        [HttpGet("{productId:int}")]   // Parametreyi route dan alır. // Parametre tipi belirtilebilir route da. - ROUTE CONSTRAINT
         public IActionResult GetById(int productId, [FromServices] PriceCalculator priceCalculator)
         {
             return CreateActionResult(_productService.GetByIdWithCalculatedTax(productId, priceCalculator));
             //if (!product.IsSuccess)
             //    return NotFound(); //404
             //return Ok(product); // ControllerBase sınıfından kalıtımla alınmış factory metot.
+        }
+
+        [HttpGet("page/{page:int}/pagesize/{pageSize:max(50)}")]    // route data types, max(): max kaç olabiliceğini belirtir integer olarak. Uymazsa 404 döner
+        public IActionResult GetByPaging(int page, int pageSize, PriceCalculator priceCalculator)
+        {
+            return CreateActionResult(_productService.GetByPaging(page, pageSize, priceCalculator));
         }
 
         //complex types => class, record, struct => request body as json
@@ -57,6 +64,12 @@ namespace NetBootcamp.API.Products
         public IActionResult Update([FromRoute] int productId, ProductUpdateRequestDto request)
         {
             return CreateActionResult(_productService.Update(productId, request));
+        }
+
+        [HttpPut("UpdateProductName")]
+        public IActionResult UpdateProductName(ProductNameUpdateRequestDto request)
+        {
+            return CreateActionResult(_productService.UpdateProductName(request));
         }
 
         /// <summary>
