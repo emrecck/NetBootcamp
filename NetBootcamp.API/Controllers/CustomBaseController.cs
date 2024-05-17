@@ -10,7 +10,7 @@ namespace NetBootcamp.API.Controllers
     {
         public IActionResult CreateActionResult<T>(ResponseModelDto<T> response, string methodName, object? routeValues)
         {
-            if (response.StatusCodes == HttpStatusCode.NoContent)
+            if (response.StatusCodes == HttpStatusCode.Created)
                 return CreatedAtAction(methodName, routeValues, null);
             
             return new ObjectResult(response) { StatusCode = (int)response.StatusCodes };
