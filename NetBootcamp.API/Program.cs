@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using NetBootcamp.API.Products;
 using NetBootcamp.API.Products.DTOs.ProductCreateUseCase;
+using NetBootcamp.API.Redis;
 using NetBootcamp.API.Repositories;
 using System.Reflection;
 
@@ -11,6 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+});
+
+builder.Services.AddSingleton<RedisService>(x =>
+{
+    return new RedisService(builder.Configuration.GetConnectionString("Redis")!);
 });
 
 builder.Services.AddControllers();  // her requestte controllerdan nesne oluþturur
