@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace NetBootcamp.API.Products
+namespace NetBootcamp.API.Products.Syncs
 {
     public class ProductRepository : IProductRepository
     {

@@ -1,8 +1,13 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NetBootcamp.API.Products;
-using NetBootcamp.API.Products.DTOs.ProductCreateUseCase;
+using NetBootcamp.API.Filters;
+using NetBootcamp.API.Products.Async;
+using NetBootcamp.API.Products.Configurations;
+using NetBootcamp.API.Products.Helpers;
+using NetBootcamp.API.Products.ProductCreateUseCase;
+using NetBootcamp.API.Products.Syncs;
 using NetBootcamp.API.Repositories;
 using System.Reflection;
 
@@ -13,13 +18,15 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 });
 
-builder.Services.AddControllers();  // her requestte controllerdan nesne oluþturur
+builder.Services.Configure<ApiBehaviorOptions>(x => { x.SuppressModelStateInvalidFilter = true; }); // .net in kendi validasyon kontrol mekanizmasýný devre dýþý býrakýp kendi validasyon filterýmýzý controller a tanýtacaðýz.
+
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddControllers(x => x.Filters.Add<ValidationFilter>()); // ValitationFilter ý controller a tanýtarak kendi validasyon kurallarýmýza göre bir Response döneceðiz  // her requestte controllerdan nesne oluþturur
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();   // swagger oluþturmak için kullanýlýr
 builder.Services.AddFluentValidationAutoValidation();
 //builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());    // Çalýþtýðý assembly üzerindeki bütün abstract validator larý ekler
-builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidator>();  // ProductCreateRequestValidator ýn bulunduðu assembly i alýr 
 
 // Add services to the container.
 
@@ -36,10 +43,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<ProductCreateRequestValidat
 // 1.AddSingleton
 // 2.AddScoped (*)
 // 3.AddTransient
-
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddSingleton<PriceCalculator>();
+builder.Services.AddProductService();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));  // generic birden fazla entity alýrsa burada "," ekliyoruz.
 
 var app = builder.Build();
 

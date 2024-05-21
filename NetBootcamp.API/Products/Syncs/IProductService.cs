@@ -1,9 +1,10 @@
 ﻿using NetBootcamp.API.DTOs;
 using NetBootcamp.API.Products.DTOs;
-using NetBootcamp.API.Products.DTOs.ProductCreateUseCase;
+using NetBootcamp.API.Products.Helpers;
+using NetBootcamp.API.Products.ProductCreateUseCase;
 using System.Collections.Immutable;
 
-namespace NetBootcamp.API.Products
+namespace NetBootcamp.API.Products.Syncs
 {
     public interface IProductService
     {
