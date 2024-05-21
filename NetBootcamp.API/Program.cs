@@ -1,26 +1,25 @@
-using FluentValidation;
+using NetBootcamp.Services.Products.Configurations;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetBootcamp.API.Filters;
-using NetBootcamp.API.Products.Async;
-using NetBootcamp.API.Products.Configurations;
-using NetBootcamp.API.Products.Helpers;
-using NetBootcamp.API.Products.ProductCreateUseCase;
-using NetBootcamp.API.Products.Syncs;
-using NetBootcamp.API.Repositories;
+using NetBootcamp.Repository;
 using System.Reflection;
+using NetBootcamp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
-    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"), x =>
+    {
+        x.MigrationsAssembly(typeof(RepositoryAssembly).Assembly.GetName().Name);
+    });
 });
 
 builder.Services.Configure<ApiBehaviorOptions>(x => { x.SuppressModelStateInvalidFilter = true; }); // .net in kendi validasyon kontrol mekanizmasýný devre dýþý býrakýp kendi validasyon filterýmýzý controller a tanýtacaðýz.
 
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(ServiceAssembly).Assembly);
 builder.Services.AddControllers(x => x.Filters.Add<ValidationFilter>()); // ValitationFilter ý controller a tanýtarak kendi validasyon kurallarýmýza göre bir Response döneceðiz  // her requestte controllerdan nesne oluþturur
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

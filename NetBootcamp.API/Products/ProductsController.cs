@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 using NetBootcamp.API.Filters;
-using NetBootcamp.API.Products.Async;
-using NetBootcamp.API.Products.DTOs;
-using NetBootcamp.API.Products.Helpers;
-using NetBootcamp.API.Products.ProductCreateUseCase;
+using NetBootcamp.Services.Products.Asyncs;
+using NetBootcamp.Services.Products.DTOs;
+using NetBootcamp.Services.Products.Helpers;
+using NetBootcamp.Services.Products.ProductCreateUseCase;
 
 namespace NetBootcamp.API.Products
 {
@@ -51,7 +51,7 @@ namespace NetBootcamp.API.Products
         [SendSmsWhenExceptionFilter]
         public async Task<IActionResult> Create(ProductCreateRequestDto request)
         {
-            throw new Exception("db ye gidemedi");
+            //throw new Exception("db ye gidemedi");
 
             var result = await _productServiceAsync.CreateAsync(request);
             return CreateActionResult(result, nameof(GetById), new { productId = result.Data });
