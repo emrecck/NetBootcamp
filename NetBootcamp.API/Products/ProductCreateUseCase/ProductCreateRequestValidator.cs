@@ -1,16 +1,17 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using NetBootcamp.API.Products.Syncs;
 
-namespace NetBootcamp.API.Products.DTOs.ProductCreateUseCase
+namespace NetBootcamp.API.Products.ProductCreateUseCase
 {
     public class ProductCreateRequestValidator : AbstractValidator<ProductCreateRequestDto>
     {
         public ProductCreateRequestValidator(IProductRepository productRepository)
         {
-            RuleFor(x=>x.Name)
+            RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Name is required")
                 .NotNull().WithMessage("Name cannot be null")
-                .Length(5,10).WithMessage("Name length is must be between 5-10.")
+                .Length(5, 10).WithMessage("Name length is must be between 5-10.")
                 .Must(productName => ExistProductName(productRepository, productName)).WithMessage("Productname must be unique");
 
             RuleFor(x => x.Price).InclusiveBetween(1, 1000).WithMessage("Price must be between 1-1000");
@@ -26,7 +27,7 @@ namespace NetBootcamp.API.Products.DTOs.ProductCreateUseCase
         }
 
         // Custom validation for Identity no
-        public static bool CheckIdentityNo(string IdentityNo) 
+        public static bool CheckIdentityNo(string IdentityNo)
         {
             return true;
         }

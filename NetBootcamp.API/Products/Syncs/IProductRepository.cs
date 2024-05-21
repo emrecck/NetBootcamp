@@ -1,4 +1,4 @@
-﻿namespace NetBootcamp.API.Products
+﻿namespace NetBootcamp.API.Products.Syncs
 {
     public interface IProductRepository
     {

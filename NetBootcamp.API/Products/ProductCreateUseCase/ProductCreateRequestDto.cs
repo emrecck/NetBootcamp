@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NetBootcamp.API.Products.DTOs.ProductCreateUseCase
+namespace NetBootcamp.API.Products.ProductCreateUseCase
 {
-    public record ProductCreateRequestDto(string Name, decimal Price); // Data record lar olarak adlandırılır. with C# 12
+    public record ProductCreateRequestDto(string Name, decimal Price, int Stock); // Data record lar olarak adlandırılır. with C# 12
 
     //public record ProductCreateRequestDto(
     //[Required(ErrorMessage = "Product name is required.")]

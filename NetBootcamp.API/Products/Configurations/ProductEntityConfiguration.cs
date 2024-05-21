@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace NetBootcamp.API.Products
+namespace NetBootcamp.API.Products.Configurations
 {
     public class ProductEntityConfiguration : IEntityTypeConfiguration<Product>
     {
@@ -15,16 +15,16 @@ namespace NetBootcamp.API.Products
 
             builder.HasData(new Product()
             {
-                Id= 1,
-                Name="PC",
-                Price= 800,
-                Created= DateTime.Now,
+                Id = 1,
+                Name = "PC",
+                Price = 800,
+                Created = DateTime.Now,
                 Barcode = Guid.NewGuid().ToString()
             },
             new Product()
             {
-                Id=2,
-                Name="Monitor",
+                Id = 2,
+                Name = "Monitor",
                 Price = 450,
                 Created = DateTime.Now,
                 Barcode = Guid.NewGuid().ToString()

@@ -1,11 +1,13 @@
-﻿namespace NetBootcamp.API.Products
+﻿using NetBootcamp.API.Repositories;
+
+namespace NetBootcamp.API.Products
 {
-    public class Product
+    public class Product : BaseEntity<int>
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;    // null değer almayacağını belirtmiş olduk. Yine de null değer alabilir fakat uyarı niteliğinde.
         public decimal Price { get; set; }
         public DateTime Created { get; set; }
-        public string Barcode { get; init; } = default!;
+        public string Barcode { get; init; }
+        public int Stock { get; set; }
     }
 }
