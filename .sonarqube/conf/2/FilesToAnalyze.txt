@@ -1,0 +1,15 @@
+﻿C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\Asyncs\IProductServiceAsync.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\Asyncs\ProductServiceAsync.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\Configurations\ProductMapper.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\Configurations\ProductServiceExtensions.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\DTOs\ProductDto.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\DTOs\ProductNameUpdateRequestDto.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\DTOs\ProductUpdateRequestDto.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\Helpers\PriceCalculator.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\NotFoundFilter.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\ProductCreateUseCase\ProductCreateRequestDto.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\ProductCreateUseCase\ProductCreateRequestValidator.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\Syncs\IProductService.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\Products\Syncs\ProductService.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\ServiceAssembly.cs
+C:\Users\emrec\source\repos\NetBootcamp\NetBootcamp.Services\SharedDTOs\ResponseModelDto.cs
