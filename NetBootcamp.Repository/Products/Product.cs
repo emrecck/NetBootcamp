@@ -7,5 +7,6 @@
         public DateTime Created { get; set; }
         public string Barcode { get; init; }
         public int Stock { get; set; }
+        public Guid CategoryId { get; set; }
     }
 }
