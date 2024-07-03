@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetBootcamp.API.DTOs;
+using NetBootcamp.Service.SharedDTOs;
 using System.Net;
 
 namespace NetBootcamp.API.Controllers
