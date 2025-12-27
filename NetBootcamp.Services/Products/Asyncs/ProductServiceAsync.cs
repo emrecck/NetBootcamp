@@ -6,17 +6,23 @@ using NetBootcamp.Repository.Products.Asyncs;
 using NetBootcamp.Services.Products.DTOs;
 using NetBootcamp.Services.Products.Helpers;
 using NetBootcamp.Services.Products.ProductCreateUseCase;
+using NetBootcamp.Services.Redis;
 using NetBootcamp.Services.SharedDTOs;
 using System.Collections.Immutable;
 using System.Net;
+using System.Text.Json;
 
 namespace NetBootcamp.Services.Products.Asyncs
 {
     // Primary constructor
-    public class ProductServiceAsync(IProductRepositoryAsync productRepositoryAsync, IUnitOfWork unitOfWork, IMapper mapper) : IProductServiceAsync
+    public class ProductServiceAsync(RedisService redisService, IProductRepositoryAsync productRepositoryAsync, IUnitOfWork unitOfWork, IMapper mapper) : IProductServiceAsync
     {
+        private const string productCacheKey = "product";
+        private const string productListCacheKey = "product-list";
         public async Task<ResponseModelDto<int>> CreateAsync(ProductCreateRequestDto request)
         {
+            // create işleminde cache i siliyoruz
+            redisService.Database.KeyDelete(productCacheKey);
             var newProduct = new Product
             {
                 Name = request.Name,
@@ -41,18 +47,59 @@ namespace NetBootcamp.Services.Products.Asyncs
 
         public async Task<ResponseModelDto<ImmutableList<ProductDto>>> GetAllWithCalulatedTaxAsync(PriceCalculator priceCalculator)
         {
+            #region StringSet
+            //if (redisService.Database.KeyExists(productCacheKey))
+            //{
+            //    var productListAsJsonToGet = redisService.Database.StringGet(productCacheKey).ToString();
+            //    var productListFromCache = JsonSerializer.Deserialize<ImmutableList<ProductDto>>(productListAsJsonToGet);
+            //    return ResponseModelDto<ImmutableList<ProductDto>>.Success(productListFromCache);
+            //}
+
+
+            //var productList = await productRepositoryAsync.GetAllAsync();
+
+            // string olarak cache te tutma
+            //var productListAsJsonToSet = JsonSerializer.Serialize(productList);
+            //redisService.Database.StringSet(productCacheKey, productListAsJsonToSet, TimeSpan.FromMinutes(10));
+            #endregion
+            
+            #region ListSet
+            
+            if (redisService.Database.KeyExists(productListCacheKey))
+            {
+                var productListAsJsonToGet = await redisService.Database.ListRangeAsync(productListCacheKey, 0, -1);
+                var productListFromCache = productListAsJsonToGet
+                    .Select(x => JsonSerializer.Deserialize<ProductDto>(x.ToString()))
+                    .Where(x => x is not null)
+                    .ToImmutableList()!;
+
+                return ResponseModelDto<ImmutableList<ProductDto>>.Success(productListFromCache);
+            }
+
             var productList = await productRepositoryAsync.GetAllAsync();
+
+            // List olarak cache te tutma
+            productList.ToList().ForEach((item) =>
+            {
+                redisService.Database.ListLeftPushAsync(productListCacheKey, JsonSerializer.Serialize(item));
+            });
+            #endregion
 
             var productDtoList = mapper.Map<List<ProductDto>>(productList.ToList());
 
-            // var productDtoList = productList.Select(product => new ProductDto
-            //(product.Id, product.Name, priceCalculator.CalculateKdv(product.Price, 1.2m), product.Created.ToShortTimeString(), product.Barcode, product.Stock)).ToImmutableList(); // immutable list geri yeni bir referans döner
 
             return ResponseModelDto<ImmutableList<ProductDto>>.Success(productDtoList.ToImmutableList());
         }
 
         public async Task<ResponseModelDto<ProductDto?>> GetByIdWithCalculatedTaxAsync(int id, PriceCalculator priceCalculator)
         {
+            if(redisService.Database.KeyExists(productListCacheKey))
+            {
+                var productFromCacheAsJson = await redisService.Database.ListGetByIndexAsync(productListCacheKey, id > 0 ? id-1 : id);
+                var productDtoFromCache = JsonSerializer.Deserialize<ProductDto>(productFromCacheAsJson.ToString());
+                if (productDtoFromCache is not null)
+                    return ResponseModelDto<ProductDto?>.Success(productDtoFromCache);
+            }
             var hasProduct = await productRepositoryAsync.GetByIdAsync(id);
 
             if (hasProduct is null) return ResponseModelDto<ProductDto?>.Fail("Ürün bulunamadı", HttpStatusCode.NotFound);
@@ -72,7 +119,8 @@ namespace NetBootcamp.Services.Products.Asyncs
         }
 
         public async Task<ResponseModelDto<NoContent>> UpdateAsync(int productId, ProductUpdateRequestDto request)
-        {
+        { 
+            redisService.Database.KeyDelete(productCacheKey);
             var hasProduct = await productRepositoryAsync.GetByIdAsync(productId);
 
             if (hasProduct is null)

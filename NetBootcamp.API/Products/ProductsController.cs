@@ -19,13 +19,14 @@ namespace NetBootcamp.API.Products
         [HttpGet]
         public async Task<IActionResult> GetAll([FromServices] PriceCalculator priceCalculator)
         {
-            return CreateActionResult(await _productServiceAsync.GetAllWithCalulatedTaxAsync(priceCalculator)); // Ok ControllerBase sınıfından kalıtımla alınmış factory metot.
+            var result = await _productServiceAsync.GetAllWithCalulatedTaxAsync(priceCalculator);
+            return CreateActionResult(result); // Ok ControllerBase sınıfından kalıtımla alınmış factory metot.
         }
 
         // query string baseUrl/api/products?id=1
         // route        baseUrl/api/products/1
 
-        [HttpGet("{productId:int}")]   // Parametreyi route dan alır. // Parametre tipi belirtilebilir route da. - ROUTE CONSTRAINT
+        [HttpGet("{productId:int:min(0)}")]   // Parametreyi route dan alır. // Parametre tipi belirtilebilir route da. - ROUTE CONSTRAINT
         [MyResourceFilter]
         [MyActionFilter]
         [MyResultFilter]
@@ -43,7 +44,7 @@ namespace NetBootcamp.API.Products
         {
             return CreateActionResult(await _productServiceAsync.GetByPagingAsync(page, pageSize, priceCalculator));
         }
-
+         
         //complex types => class, record, struct => request body as json
         //simple types => int, string, decimal => query string by default / route data
 

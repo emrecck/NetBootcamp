@@ -2,6 +2,8 @@
 {
     public record ProductCreateRequestDto(string Name, decimal Price, int Stock); // Data record lar olarak adlandırılır. with C# 12
 
+    // Alternatif olarak attribute lerde kullanılabilir.
+
     //public record ProductCreateRequestDto(
     //[Required(ErrorMessage = "Product name is required.")]
     //[StringLength(maximumLength:10, ErrorMessage = "Product name must be 10 characters.")]

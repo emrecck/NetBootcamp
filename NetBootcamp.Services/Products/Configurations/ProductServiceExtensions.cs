@@ -7,6 +7,7 @@ using NetBootcamp.Services.Products.Helpers;
 using NetBootcamp.Services.Products.ProductCreateUseCase;
 using FluentValidation;
 using NetBootcamp.API.Filters;
+using NetBootcamp.Services.Redis;
 
 namespace NetBootcamp.Services.Products.Configurations
 {
