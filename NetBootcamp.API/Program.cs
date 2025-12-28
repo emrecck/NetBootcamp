@@ -17,7 +17,9 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     });
 });
 
-builder.Services.Configure<ApiBehaviorOptions>(x => { x.SuppressModelStateInvalidFilter = true; }); // .net in kendi validasyon kontrol mekanizmasýný devre dýþý býrakýp kendi validasyon filterýmýzý controller a tanýtacaðýz.
+builder.Services.Configure<ApiBehaviorOptions>(x => {
+    x.SuppressModelStateInvalidFilter = true;
+}); // .net in kendi validasyon kontrol mekanizmasýný devre dýþý býrakýp kendi validasyon filterýmýzý controller a tanýtacaðýz.
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(ServiceAssembly).Assembly);
 builder.Services.AddControllers(x => x.Filters.Add<ValidationFilter>()); // ValitationFilter ý controller a tanýtarak kendi validasyon kurallarýmýza göre bir Response döneceðiz  // her requestte controllerdan nesne oluþturur

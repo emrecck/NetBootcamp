@@ -1,7 +1,6 @@
-﻿namespace NetBootcamp.Repository.Products.Asyncs
+﻿namespace NetBootcamp.Repository.Products.Asyncs;
+
+public interface IProductRepositoryAsync : IGenericRepository<Product>
 {
-    public interface IProductRepositoryAsync : IGenericRepository<Product>
-    {
-        Task UpdateProductNameAsync(string name, int id);
-    }
+    Task UpdateProductNameAsync(string name, int id);
 }
