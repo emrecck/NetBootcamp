@@ -1,4 +1,6 @@
-﻿namespace NetBootcamp.Repository.Products
+﻿using NetBootcamp.Repository.Repositories;
+
+namespace NetBootcamp.Repository.Products
 {
     public class Product : BaseEntity<int>
     {

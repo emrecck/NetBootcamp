@@ -1,7 +1,6 @@
-﻿using NetBootcamp.Repository;
-using NetBootcamp.Repository.Categories;
+﻿using NetBootcamp.Repository.Categories;
 
-namespace NetBootcamp.Repository
+namespace NetBootcamp.Repository.Repositories
 {
     public class SeedData
     {

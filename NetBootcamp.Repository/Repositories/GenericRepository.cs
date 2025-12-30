@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace NetBootcamp.Repository
+namespace NetBootcamp.Repository.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity<int>
     {

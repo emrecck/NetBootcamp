@@ -3,7 +3,7 @@ using NetBootcamp.Repository.Categories;
 using NetBootcamp.Repository.Products;
 using System.Reflection;
 
-namespace NetBootcamp.Repository;
+namespace NetBootcamp.Repository.Repositories;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

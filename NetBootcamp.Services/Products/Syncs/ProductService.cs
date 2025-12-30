@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetBootcamp.Repository;
 using NetBootcamp.Repository.Products;
 using NetBootcamp.Repository.Products.Syncs;
+using NetBootcamp.Repository.Repositories;
 using NetBootcamp.Services.Products.DTOs;
 using NetBootcamp.Services.Products.Helpers;
 using NetBootcamp.Services.Products.ProductCreateUseCase;

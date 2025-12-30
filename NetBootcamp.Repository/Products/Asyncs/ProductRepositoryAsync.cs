@@ -1,4 +1,6 @@
-﻿namespace NetBootcamp.Repository.Products.Asyncs;
+﻿using NetBootcamp.Repository.Repositories;
+
+namespace NetBootcamp.Repository.Products.Asyncs;
 
 public class ProductRepositoryAsync : GenericRepository<Product>, IProductRepositoryAsync
 {

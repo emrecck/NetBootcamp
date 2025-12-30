@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using NetBootcamp.Repository;
 
-namespace NetBootcamp.Repository  
+namespace NetBootcamp.Repository.Repositories  
 {
     public static class SeedExtensions
     {

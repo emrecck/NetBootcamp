@@ -1,4 +1,4 @@
-﻿namespace NetBootcamp.Repository
+﻿namespace NetBootcamp.Repository.Repositories
 {
     public interface IUnitOfWork
     {

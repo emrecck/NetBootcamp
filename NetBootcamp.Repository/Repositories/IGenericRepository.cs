@@ -1,7 +1,7 @@
 ﻿using NetBootcamp.Repository.Products;
 using System.Linq.Expressions;
 
-namespace NetBootcamp.Repository
+namespace NetBootcamp.Repository.Repositories
 {
     public interface IGenericRepository<T>
     {
