@@ -1,6 +1,7 @@
 using NetBootcamp.API.Extensions;
 using NetBootcamp.API.Filters;
 using NetBootcamp.Repository.Repositories;
+using NetBootcamp.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,19 +1,23 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using NetBootcamp.API.ExceptionHandlers;
-using NetBootcamp.Services;
+using Microsoft.Extensions.DependencyInjection;
+using NetBootcamp.Services.ExceptionHandlers;
 using NetBootcamp.Services.Products.Configurations;
 using NetBootcamp.Services.Redis;
+using NetBootcamp.Services.Token;
+using NetBootcamp.Services.Weather;
+using TokenOptions = NetBootcamp.Services.Token.TokenOptions;
 
-namespace NetBootcamp.API.Extensions;
+namespace NetBootcamp.Services.Extensions;
 
 public static class ServiceExtensions
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         // .net in kendi validasyon kontrol mekanizmasını devre dışı bırakıp kendi validasyon filterımızı controller a tanıtacağız.
-        services.Configure<ApiBehaviorOptions>(x => {
+        services.Configure<ApiBehaviorOptions>(x =>
+        {
             x.SuppressModelStateInvalidFilter = true;
         });
 
@@ -35,5 +39,12 @@ public static class ServiceExtensions
         services.AddExceptionHandler<CriticalExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
+
+        services.AddScoped<IWeatherService, WeatherService>();
+        services.AddScoped<ITokenService, TokenService>();
+
+        // Options Pattern
+        services.Configure<TokenOptions>(configuration.GetSection("TokenOptions"));
+        services.Configure<ClientCredentials>(configuration.GetSection("ClientCredentials"));
     }
 }
