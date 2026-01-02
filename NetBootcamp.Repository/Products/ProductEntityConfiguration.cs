@@ -13,22 +13,22 @@ namespace NetBootcamp.Repository.Products
             builder.Property(p => p.Created).IsRequired();
             builder.Property(p => p.Barcode).IsRequired().HasMaxLength(100);
 
-            builder.HasData(new Product()
-            {
-                Id = 1,
-                Name = "PC",
-                Price = 800,
-                Created = DateTime.Now,
-                Barcode = Guid.NewGuid().ToString()
-            },
-            new Product()
-            {
-                Id = 2,
-                Name = "Monitor",
-                Price = 450,
-                Created = DateTime.Now,
-                Barcode = Guid.NewGuid().ToString()
-            });
+            //builder.HasData(new Product()
+            //{
+            //    Id = 1,
+            //    Name = "PC",
+            //    Price = 800,
+            //    Created = DateTime.Now,
+            //    Barcode = Guid.NewGuid().ToString()
+            //},
+            //new Product()
+            //{
+            //    Id = 2,
+            //    Name = "Monitor",
+            //    Price = 450,
+            //    Created = DateTime.Now,
+            //    Barcode = Guid.NewGuid().ToString()
+            //});
         }
     }
 }

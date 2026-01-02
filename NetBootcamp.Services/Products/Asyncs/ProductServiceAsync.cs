@@ -22,7 +22,7 @@ namespace NetBootcamp.Services.Products.Asyncs
         public async Task<ResponseModelDto<int>> CreateAsync(ProductCreateRequestDto request)
         {
             // create işleminde cache i siliyoruz
-            redisService.Database.KeyDelete(productCacheKey);
+            redisService.Database.KeyDelete(productListCacheKey);
             var newProduct = new Product
             {
                 Name = request.Name,

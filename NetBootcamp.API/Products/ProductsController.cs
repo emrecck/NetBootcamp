@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
 using NetBootcamp.API.ExceptionHandlers;
 using NetBootcamp.API.Filters;
@@ -18,8 +19,6 @@ namespace NetBootcamp.API.Products
         [HttpGet]
         public async Task<IActionResult> GetAll([FromServices] PriceCalculator priceCalculator)
         {
-            throw new CriticalException("An error occurred while fetching products.");
-
             var result = await _productServiceAsync.GetAllWithCalulatedTaxAsync(priceCalculator);
             return CreateActionResult(result); // Ok ControllerBase sınıfından kalıtımla alınmış factory metot.
         }
@@ -49,6 +48,7 @@ namespace NetBootcamp.API.Products
         //complex types => class, record, struct => request body as json
         //simple types => int, string, decimal => query string by default / route data
 
+        [Authorize(Policy = "Over18AgePolicy")]
         [HttpPost]
         [SendSmsWhenExceptionFilter]
         public async Task<IActionResult> Create(ProductCreateRequestDto request)
@@ -72,6 +72,7 @@ namespace NetBootcamp.API.Products
         /// <param name="productId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
+        [Authorize(Roles = "editor", Policy = "UpdatePolicy")]
         [HttpPut("{productId}")]
         [ServiceFilter(typeof(NotFoundFilter))]
         public async Task<IActionResult> Update([FromRoute] int productId, ProductUpdateRequestDto request)

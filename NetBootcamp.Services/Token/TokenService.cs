@@ -20,6 +20,11 @@ public class TokenService(IOptions<TokenOptions> tokenOptions, IOptions<ClientCr
             new Claim("client_id", requestDto.ClientId)
         };
 
+        tokenOptions.Value.Audiences.ToList().ForEach(audience =>
+        {
+            claims.Add(new Claim(JwtRegisteredClaimNames.Aud, audience)); 
+        });
+
         var tokenExpiration = DateTime.Now.AddHours(tokenOptions.Value.ExpireByHour);
 
         var signingCredentials = new SigningCredentials(
@@ -29,7 +34,11 @@ public class TokenService(IOptions<TokenOptions> tokenOptions, IOptions<ClientCr
             SecurityAlgorithms.HmacSha256Signature
         );
 
-        var jwtToken = new JwtSecurityToken(claims: claims, expires: tokenExpiration, signingCredentials: signingCredentials);
+        var jwtToken = new JwtSecurityToken(
+            claims: claims,
+            expires: tokenExpiration,
+            signingCredentials: signingCredentials,
+            issuer: tokenOptions.Value.Issuer);
 
         var handler = new JwtSecurityTokenHandler();
         var token = handler.WriteToken(jwtToken);
