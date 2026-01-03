@@ -1,21 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.Web.Models;
+using NetBootcamp.Web.Services.Weather;
 using System.Diagnostics;
 
 namespace NetBootcamp.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger, WeatherService weatherService) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            ViewBag.Weather = await weatherService.GetWeatherBetterVersionAsync("Istanbul");
+            return View(default);
         }
 
         public IActionResult Privacy()

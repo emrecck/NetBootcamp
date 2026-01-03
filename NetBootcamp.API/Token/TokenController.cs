@@ -6,7 +6,7 @@ namespace NetBootcamp.API.Token;
 
 public class TokenController(ITokenService tokenService) : CustomBaseController
 {
-    [HttpPost]
+    [HttpPost("CreateClientCredential")]
     public async Task<IActionResult> GenerateToken(AccessTokenRequestDto requestDto)
     {
         var result = await tokenService.GenerateTokenAsync(requestDto);

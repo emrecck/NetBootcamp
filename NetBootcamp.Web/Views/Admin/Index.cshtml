@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Admin Page";
+}
+
+
+<script>
+    let bgcolor = @($"{ViewBag.BgColor}");
+
+    let bodyElement = document.getElementsByTagName("body");
+
+    console.log("bg-color: ", bgcolor);
+    console.log("bodyElement", bodyElement);
+
+</script>
