@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.API.Controllers;
+using NetBootcamp.Services.Token.Dtos;
 using NetBootcamp.Services.Users;
 
 namespace NetBootcamp.API.Users;
@@ -19,6 +20,13 @@ public class UsersController(IUserService userService) : CustomBaseController
     public async Task<IActionResult> SignIn(SignInRequestDto requestDto)
     {
         var result = await userService.SignIn(requestDto);
+        return CreateActionResult(result);
+    }
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken(SignInByRefreshTokenRequestDto requestDto)
+    {
+        var result = await userService.SignInByRefreshToken(requestDto);
         return CreateActionResult(result);
     }
 }

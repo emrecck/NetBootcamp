@@ -1,14 +1,11 @@
 ﻿using NetBootcamp.Services.SharedDTOs;
-using NetBootcamp.Services.Token;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using NetBootcamp.Services.Token.Dtos;
 
-namespace NetBootcamp.Services.Users
+namespace NetBootcamp.Services.Users;
+
+public interface IUserService
 {
-    public interface IUserService
-    {
-        Task<ResponseModelDto<Guid>> SignUp(SignUpRequestDto requestDto);
-        Task<ResponseModelDto<TokenResponseDto>> SignIn(SignInRequestDto requestDto);
-    }
+    Task<ResponseModelDto<Guid>> SignUp(SignUpRequestDto requestDto);
+    Task<ResponseModelDto<TokenResponseDto>> SignIn(SignInRequestDto requestDto);
+    Task<ResponseModelDto<TokenResponseDto>> SignInByRefreshToken(SignInByRefreshTokenRequestDto requestDto);
 }

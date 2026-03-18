@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using NetBootcamp.API.Extensions;
 using NetBootcamp.API.Filters;
+using NetBootcamp.Repository.Identity;
 using NetBootcamp.Repository.Repositories;
 using NetBootcamp.Services.Extensions;
 using NetBootcamp.Services.Token.Policies.OverAge;
+using NetBootcamp.Services.Users;
+using System.Threading.Channels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddScoped<IAuthorizationHandler, OverAgeRequirementHandler>();
+
+builder.Services.AddSingleton(Channel.CreateUnbounded<UserCreatedEvent>());
+builder.Services.AddHostedService<BackgroundServiceEmailSender>();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("UpdatePolicy", policy => {

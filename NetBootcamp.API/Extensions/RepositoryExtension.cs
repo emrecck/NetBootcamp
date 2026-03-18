@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetBootcamp.Repository;
 using NetBootcamp.Repository.Repositories;
+using NetBootcamp.Repository.Tokens;
 
 namespace NetBootcamp.API.Extensions;
 
@@ -17,5 +18,6 @@ public static class RepositoryExtension
         });
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // generic birden fazla entity alırsa burada "," ekliyoruz.
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
     }
 }

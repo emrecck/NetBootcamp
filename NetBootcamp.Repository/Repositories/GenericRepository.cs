@@ -31,10 +31,16 @@ namespace NetBootcamp.Repository.Repositories
             return list.AsReadOnly();
         }
 
-        public async Task<IReadOnlyList<T>> GetAllWithExpressionAsync(Expression<Func<T, bool>> expression)
+        public async Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> expression)
         {
             var list = await DbSet.Where(expression).ToListAsync();
             return list.AsReadOnly();
+        }
+
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> expression)
+        {
+            var result = await DbSet.SingleOrDefaultAsync(expression);
+            return result!;
         }
 
         public async Task<T> GetByIdAsync(int id)

@@ -4,7 +4,7 @@ using NetBootcamp.Web.Models;
 
 namespace NetBootcamp.Web.Services.Token;
 
-public class TokenService(HttpClient client, IOptions<TokenOption> options, IMemoryCache memoryCache)
+public class TokenService(HttpClient client, IHttpContextAccessor httpContextAccessor, IOptions<TokenOption> options, IMemoryCache memoryCache, ILogger<TokenService> logger)
 {
     private const string TokenKey = "client_credential:access_token";
 

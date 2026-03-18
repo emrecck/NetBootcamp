@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NetBootcamp.Repository.Categories;
 using NetBootcamp.Repository.Identity;
 using NetBootcamp.Repository.Products;
+using NetBootcamp.Repository.Tokens;
 using System.Reflection;
 
 namespace NetBootcamp.Repository.Repositories;
@@ -15,6 +16,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
     }
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Current assembly içerisindeki tüm type configuration file ları ekler

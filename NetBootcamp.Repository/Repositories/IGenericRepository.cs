@@ -1,17 +1,16 @@
-﻿using NetBootcamp.Repository.Products;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace NetBootcamp.Repository.Repositories
+namespace NetBootcamp.Repository.Repositories;
+
+public interface IGenericRepository<T>
 {
-    public interface IGenericRepository<T>
-    {
-        Task<IReadOnlyList<T>> GetAllAsync();
-        Task<IReadOnlyList<T>> GetByPagingAsync(int page, int pageSize);
-        Task<IReadOnlyList<T>> GetAllWithExpressionAsync(Expression<Func<T, bool>> expression);
-        Task<T> GetByIdAsync(int id);
-        Task<T> CreateAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(int id);
-        Task<bool> IsExist(int id);
-    }
+    Task<IReadOnlyList<T>> GetAllAsync();
+    Task<IReadOnlyList<T>> GetAllAsync(Expression<Func<T, bool>> expression);
+    Task<IReadOnlyList<T>> GetByPagingAsync(int page, int pageSize);
+    Task<T?> GetAsync(Expression<Func<T, bool>> expression);
+    Task<T> GetByIdAsync(int id);
+    Task<T> CreateAsync(T entity);
+    Task UpdateAsync(T entity);
+    Task DeleteAsync(int id);
+    Task<bool> IsExist(int id);
 }

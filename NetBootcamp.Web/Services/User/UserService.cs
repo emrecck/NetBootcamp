@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace NetBootcamp.Web.Services.User;
 
-public class UserService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider dataProtectionProvider)
+public class UserService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider dataProtectionProvider, ILogger<UserService> logger)
 {
     public async Task<ServiceResponseModel<NoContent>> SignIn(SigninRequestDto requestDto)
     {
@@ -25,7 +25,7 @@ public class UserService(HttpClient httpClient, IHttpContextAccessor httpContext
         {
             new(){ Name = OpenIdConnectParameterNames.AccessToken, Value = responseAsModel.Data.AccessToken },
             new(){ Name = OpenIdConnectParameterNames.ExpiresIn, Value = responseAsModel.Data.ExpireAt.ToString() },
-            new(){ Name = OpenIdConnectParameterNames.RefreshToken, Value = "responseAsModel.Data.RefreshToken" },
+            new(){ Name = OpenIdConnectParameterNames.RefreshToken, Value = responseAsModel.Data.RefreshToken },
         };
 
         var jwtHandler = new JwtSecurityTokenHandler();
@@ -53,4 +53,20 @@ public class UserService(HttpClient httpClient, IHttpContextAccessor httpContext
         return ServiceResponseModel<NoContent>.Success();
     }
 
+    public async Task RevokeRefreshToken()
+    {
+        var refreshToken = await httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+
+        var response = await httpClient.PostAsync($"/api/token/revokeRefreshToken/{refreshToken}", null);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var responseAsBody = await response.Content.ReadFromJsonAsync<ResponseModelDto<NoContent>>();
+
+            foreach (var item in responseAsBody.FailMessages)
+            {
+                logger.LogError("Failed to revoke refresh token. {Error}", item);
+            }
+        }
+    }
 }

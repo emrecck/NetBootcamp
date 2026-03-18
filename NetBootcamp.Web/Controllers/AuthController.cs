@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using NetBootcamp.Web.Models;
+using NetBootcamp.Web.Services.Token;
 using NetBootcamp.Web.Services.User;
 using NetBootcamp.Web.Services.User.Signin;
 
 namespace NetBootcamp.Web.Controllers
 {
-    public class AuthController(UserService userService, ILogger<AuthController> logger) : Controller
+    public class AuthController(UserService userService, TokenService tokenService, ILogger<AuthController> logger) : Controller
     {
         [HttpGet]
         public IActionResult SignIn()
@@ -32,6 +33,7 @@ namespace NetBootcamp.Web.Controllers
         public async Task<IActionResult> SignOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await tokenService.RevokeRefreshToken();
             return RedirectToAction("Index", "Home");
         }
 
